@@ -1,9 +1,10 @@
 import Link from "next/link";
 import Tag from "@/app/quizzes/_components/Tag";
 import { QuizSummaryResponse } from "@/lib/types/quiz";
+import { RecommendedQuizType } from "@/lib/types/recommended";
 
 interface QuizCardProps {
-  quiz: QuizSummaryResponse;
+  quiz: Partial<QuizSummaryResponse> | Partial<RecommendedQuizType>;
 }
 
 const QuizCard: React.FC<QuizCardProps> = ({ quiz }) => {
@@ -37,7 +38,8 @@ const QuizCard: React.FC<QuizCardProps> = ({ quiz }) => {
 
         {/* 시도 횟수 & 평균 점수 */}
         <div className="text-sm text-muted">
-          📊 {quiz.attemptCount}회 도전 | 평균 점수: {quiz.avgScore.toFixed(1)}
+          📊 {quiz.attemptCount}회 도전 | 평균 점수:{" "}
+          {quiz.avgScore?.toFixed(1) || 0}점
         </div>
       </Link>
     </div>

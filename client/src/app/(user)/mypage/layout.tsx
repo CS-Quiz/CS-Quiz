@@ -19,6 +19,12 @@ export default function MyPageLayout({
             활동 기록
           </Link>
           <Link
+            href="/mypage/recommended"
+            className="w-full px-4 py-2 text-sm font-semibold text-foreground bg-sub-foreground border border-border rounded hover:bg-gray-500 transition-colors"
+          >
+            개별 추천 퀴즈
+          </Link>
+          <Link
             href="/mypage/create"
             className="w-full px-4 py-2 text-sm font-semibold text-foreground bg-sub-foreground border border-border rounded hover:bg-gray-500 transition-colors"
           >

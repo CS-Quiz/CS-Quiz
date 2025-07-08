@@ -6,6 +6,7 @@ import { useProfileStore } from "@/store/profileStore";
 import { useToastStore } from "@/store/toastStore";
 import { useGetDailyQuizzes } from "@/lib/api/quiz/useGetDailyQuizzes";
 import { useGetRecommendedQuizzes } from "@/lib/api/quiz/useGetRecommendedQuizzes";
+import { useGetPopularQuizzes } from "@/lib/api/recommendation/useGetPopularQuizzes";
 import Image from "next/image";
 import Progress from "@/app/_components/Progress";
 import Link from "next/link";
@@ -22,7 +23,7 @@ const Sidebar: React.FC = () => {
 
   // ✅ 추천 퀴즈 데이터 가져오기
   const { data: recommendedQuizzes, isLoading: isLoadingRecommended } =
-    useGetRecommendedQuizzes({ limit: 3 });
+    useGetPopularQuizzes(5);
 
   useEffect(() => {
     if (isAuthenticated && !userProfile) {
@@ -128,7 +129,7 @@ const Sidebar: React.FC = () => {
       </section>
 
       {/* 🔹 퀴즈 추천 */}
-      <section className="mt-6 space-y-3">
+      <section className="mt-6 space-y-3 flex flex-col align-end">
         <div className="bg-card border border-border p-3 rounded-lg">
           <h3 className="text-sm font-semibold mb-2">📅 오늘의 퀴즈</h3>
           {isLoadingDaily ? (
@@ -136,7 +137,7 @@ const Sidebar: React.FC = () => {
           ) : dailyQuiz?.data && Object.keys(dailyQuiz.data).length > 0 ? (
             <Link
               href={`/quiz/daily/${dailyQuiz.data.id}`}
-              className="block text-xs font-semibold bg-primary text-white p-2 rounded-md text-center hover:bg-primary/90 transition"
+              className="text-sm text-primary bg-white border rounded p-2 hover:scale-105 transition"
             >
               {dailyQuiz.data.title}
             </Link>
@@ -145,27 +146,36 @@ const Sidebar: React.FC = () => {
           )}
         </div>
 
-        <div className="bg-card border border-border p-3 rounded-lg">
+        <div className="bg-card border border-border p-3 rounded-lg gap-2">
           <h3 className="text-sm font-semibold mb-2">🌟 추천 퀴즈</h3>
           {isLoadingRecommended ? (
             <p className="text-xs text-muted">불러오는 중...</p>
           ) : Array.isArray(recommendedQuizzes?.data) &&
             recommendedQuizzes.data.length > 0 ? (
-            recommendedQuizzes.data
-              .filter((quiz) => Object.keys(quiz).length > 0)
-              .map((quiz) => (
-                <Link
-                  key={quiz.id}
-                  href={`/quiz/recommended/${quiz.id}`}
-                  className="block text-xs bg-secondary text-white p-2 rounded-md hover:bg-secondary/90 transition"
-                >
-                  {quiz.title}
-                </Link>
-              ))
+            <div className="flex flex-col gap-1">
+              {recommendedQuizzes.data
+                .filter((quiz) => Object.keys(quiz).length > 0)
+                .map((quiz) => (
+                  <Link
+                    key={quiz.id}
+                    href={`/quizzes/${quiz.id}`}
+                    className="text-sm text-primary bg-white border rounded p-2 hover:scale-105 transition"
+                  >
+                    {quiz.title}
+                  </Link>
+                ))}
+            </div>
           ) : (
             <p className="text-xs text-muted">추천 퀴즈가 없습니다.</p>
           )}
         </div>
+        <Button
+          size="small"
+          onClick={() => router.push("quizzes/recommennded")}
+          className="w-full mt-2"
+        >
+          추천 퀴즈 더 보기
+        </Button>
       </section>
     </aside>
   );
