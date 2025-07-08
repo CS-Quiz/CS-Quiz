@@ -34,6 +34,25 @@ const activityMessageMap: Record<
   LEVEL_UP: (a) => `레벨업! 새로운 레벨: ${a.newLevel ?? "레벨 정보 없음"}`,
 };
 
+export const SectionWrapper = ({
+  title,
+  icon,
+  ariaLabel,
+  children,
+}: {
+  title: string;
+  icon: React.ReactNode;
+  ariaLabel: string;
+  children: React.ReactNode;
+}) => (
+  <section className="bg-background p-4 space-y-3" aria-label={ariaLabel}>
+    <h2 className="text-lg font-semibold flex items-center gap-2 border-b-2 border-primary pb-2 mb-2">
+      {icon} {title}
+    </h2>
+    {children}
+  </section>
+);
+
 const Dashboard: React.FC<DashboardProps> = ({ userId }) => {
   const { data: statistics, isLoading: isLoadingStats } =
     useUserStatistics(userId);
@@ -46,24 +65,6 @@ const Dashboard: React.FC<DashboardProps> = ({ userId }) => {
 
   console.log("Dashboard - Statistics:", statistics);
   console.log("Dashboard - Activities:", activities);
-  const SectionWrapper = ({
-    title,
-    icon,
-    ariaLabel,
-    children,
-  }: {
-    title: string;
-    icon: React.ReactNode;
-    ariaLabel: string;
-    children: React.ReactNode;
-  }) => (
-    <section className="bg-background p-4 space-y-3" aria-label={ariaLabel}>
-      <h2 className="text-lg font-semibold flex items-center gap-2 border-b-2 border-primary pb-2 mb-2">
-        {icon} {title}
-      </h2>
-      {children}
-    </section>
-  );
 
   return (
     <div className="max-w-5xl mx-auto p-6 space-y-6">

@@ -8,6 +8,7 @@ import { CalendarDays, Sparkles } from "lucide-react";
 import Button from "../_components/Button";
 import Image from "next/image";
 import { motion } from "framer-motion"; // ✅ 애니메이션용 추가!
+import { useGetPopularQuizzes } from "@/lib/api/recommendation/useGetPopularQuizzes";
 
 const AuthSection = () => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
@@ -22,7 +23,7 @@ const AuthSection = () => {
     data: recommendedQuizzes,
     isLoading: isLoadingRecommended,
     error: recommendedError,
-  } = useGetRecommendedQuizzes({ limit: 1 });
+  } = useGetPopularQuizzes(1);
 
   return (
     <section className="max-w-screen-xl text-foreground px-2 my-16 rounded-xl flex flex-col items-center text-center overflow-hidden">
@@ -78,7 +79,7 @@ const AuthSection = () => {
           </div>
 
           {/* ✨ 퀴즈 카드 2개 */}
-          <div className="grid grid-cols-2 gap-3 mt-6 w-full">
+          <div className="grid grid-cols-2 gap-2 mt-6 w-full">
             {/* 오늘의 퀴즈 */}
             <motion.div
               whileHover={{ scale: 1.05 }}
@@ -111,7 +112,7 @@ const AuthSection = () => {
             {/* 추천 퀴즈 */}
             <motion.div
               whileHover={{ scale: 1.05 }}
-              className="bg-card-background border border-border px-3 py-4 rounded-lg hover:border-primary hover:bg-sub-background transition flex flex-col items-center justify-center gap-1 min-h-[100px]"
+              className="bg-card-background border border-border px-3 py-4 rounded-lg hover:border-primary hover:bg-sub-background transition flex flex-col items-center justify-center min-h-[100px]"
             >
               <Sparkles size={18} className="text-secondary mb-1" />
               <h2 className="text-sm font-semibold text-foreground">
@@ -125,7 +126,7 @@ const AuthSection = () => {
                 ) : recommendedQuizzes?.data?.length &&
                   Object.keys(recommendedQuizzes.data[0] || {}).length > 0 ? (
                   <Link href={`/quizzes/${recommendedQuizzes.data[0].id}`}>
-                    <button className="text-xs text-primary hover:underline transition">
+                    <button className="text-sm text-primary  transition">
                       {recommendedQuizzes.data[0].title}
                     </button>
                   </Link>

@@ -72,6 +72,6 @@ const features = [
     description: "사용자의 수준과 관심사에 따라 맞춤형 퀴즈를 추천해 드립니다.",
     icon: <Code size={36} className="text-green-600" />,
     color: "from-green-50 to-green-100",
-    href: "/quizzes",
+    href: "/mypage/recommended",
   },
 ];
