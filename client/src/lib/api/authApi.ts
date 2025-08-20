@@ -12,7 +12,7 @@ export const authApi = {
       useAuthStore.getState().logout();
 
       // 2. 서버 쿠키 삭제
-      await fetch("/api/auth/logout", {
+      await fetch("/api/oauth2/logout", {
         method: "POST",
       });
 

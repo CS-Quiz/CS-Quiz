@@ -53,6 +53,8 @@ export const useAuthStore = create<AuthState>()(
         }
 
         if (typeof window !== "undefined") {
+          // ✅ 혹시 남아있을 수 있는 키도 함께 정리
+          localStorage.removeItem("accessToken");
           localStorage.removeItem("auth");
           localStorage.removeItem("profile");
           sessionStorage.clear();

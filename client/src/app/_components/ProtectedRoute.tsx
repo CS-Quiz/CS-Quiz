@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/store/authStore";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -9,21 +10,17 @@ interface ProtectedRouteProps {
 
 export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   const router = useRouter();
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const { isAuthenticated, expiresAt } = useAuthStore();
+
+  const validSession =
+    isAuthenticated && !!expiresAt && Date.now() < (expiresAt ?? 0);
 
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-
-    if (!token) {
-      router.push("/login");
-    } else {
-      setIsAuthenticated(true);
+    if (!validSession) {
+      router.replace("/login");
     }
-  }, [router]);
+  }, [validSession, router]);
 
-  if (isAuthenticated === null) {
-    return <p>로딩 중...</p>;
-  }
-
+  if (!validSession) return null;
   return <>{children}</>;
 }
